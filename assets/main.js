@@ -11,20 +11,19 @@ const options = {
   },
 };
 
+const abortar=new AbortController()
+
 async function fetchData(urlApi) {
   const response = await fetch(urlApi, options);
   if (response.status === 200) {
     const data = await response.json();
     return data;
-  } else {
-    alert("ocurrio un error");
   }
 }
 /* Funcion anonima */
 (async () => {
   try {
     const videos = await fetchData(API);
-
     let view = `
     ${videos.items.map((video) => (`
     <div class="group relative">
@@ -48,6 +47,7 @@ async function fetchData(urlApi) {
 
    contenido.innerHTML = view;
   } catch (error) {
-    console.log(error);
+    alert("ocurrio un error, se cancelo la solicitud");
+    abortar.abort();
   }
 })();
